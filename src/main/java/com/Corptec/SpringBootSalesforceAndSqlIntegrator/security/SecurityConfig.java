@@ -5,6 +5,7 @@ import com.Corptec.SpringBootSalesforceAndSqlIntegrator.model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,12 +34,14 @@ public class SecurityConfig {
 				.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 				.authorizeHttpRequests(authCustomizer -> authCustomizer
-						.requestMatchers("/api/customer/**").hasAuthority(UserType.CUSTOMER.toString())
+						.requestMatchers(HttpMethod.GET,"/api/customer/**").hasAuthority(UserType.CUSTOMER.toString())
+						.requestMatchers(HttpMethod.POST,"/api/customer/**").hasAuthority(UserType.CUSTOMER.toString())
 						.requestMatchers("/api/v1/adminRegister").permitAll()
 						.requestMatchers("/api/v1/adminLogin").permitAll()
 						.requestMatchers("/api/v1/customerRegister").permitAll()
 						.requestMatchers("/api/v1/adminLogin").permitAll()
-						.requestMatchers("/api/v1/admin/**").hasAuthority(UserType.ADMIN.toString())
+						.requestMatchers("/api/v1/customer/**").hasAuthority(UserType.ADMIN.toString())
+						.requestMatchers("/api/vi/api-docs","/swagger-resources/configuration/ui","/swagger-resources","/swagger-resources/configuration/security","/swagger-ui.html", "/webjars/**").permitAll()
 						.requestMatchers("/api/v1/**").authenticated());
 
 
